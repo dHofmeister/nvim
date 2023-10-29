@@ -1,0 +1,8 @@
+{
+  "name": "Neovim Dev Container",
+  "dockerFile": "../Dockerfile",
+  "context": "..",
+  "settings": {
+    "terminal.integrated.shell.linux": "/bin/bash"
+  }
+}
