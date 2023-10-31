@@ -4,10 +4,12 @@ services:
   nvim:
     build:
       dockerfile: "Dockerfile"
-      args:
-        - GITHUB_USERNAME=${GITHUB_USERNAME}
-        - GITHUB_TOKEN=${GITHUB_TOKEN}
       context: .
+    image: robotics-deployment:dev
     volumes:
-      - ${HOME}/.config/nvim:/root/.config/nvim
+      - .:/root/nvim
+      - ~/.config/lvim:/root/.config/lvim
+      - ~/.local/state/lvim:/root/.local/state/lvim
+      - ~/.local/share/lvim:/root/.local/share/lvim
+      - ~/.local/share/lunarvim:/root/.local/share/lunarvim
     command: ["sleep", "infinity"]

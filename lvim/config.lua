@@ -19,6 +19,7 @@ table.insert(lvim.plugins, {"mfussenegger/nvim-dap"})
 table.insert(lvim.plugins, {"mfussenegger/nvim-dap-python"})
 
 vim.opt.timeoutlen = 1
+vim.opt.clipboard = "unnamedplus"
 
 -- Enable DAP
 lvim.builtin.dap.active = true

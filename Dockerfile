@@ -1,9 +1,4 @@
-#ARG GITHUB_USERNAME
-#ARG GITHUB_TOKEN
-
 FROM ubuntu:latest
-#ARG GITHUB_TOKEN
-#ARG GITHUB_USERNAME
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
   git \
@@ -13,8 +8,11 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
   ca-certificates \
   build-essential \
   cmake \
-  && rm -rf /var/lib/apt/lists/*
+  xclip \
+  python3-pip \
+ && rm -rf /var/lib/apt/lists/*
 
+RUN python3 -m pip install --upgrade pip && python3 -m pip install --no-cache-dir neovim pynvim debugpy pyright pyls
 
 RUN wget https://github.com/neovim/neovim/releases/download/v0.9.4/nvim-linux64.tar.gz && \
   tar -xzf nvim-linux64.tar.gz && \
@@ -29,9 +27,6 @@ RUN wget https://nodejs.org/dist/v20.9.0/node-v20.9.0-linux-x64.tar.xz && \
 ENV PATH=/opt/nvim/bin:$PATH
 ENV PATH=/opt/node/bin:$PATH
 
-#RUN git clone https://${GITHUB_TOKEN}@github.com/${GITHUB_USERNAME}/nvim /tmp/nvim && \
-#  mkdir -p ~/.config/nvim/ && \
-#  mv /tmp/nvim/nvim/* ~/.config/nvim && \
-#  rm -rf /tmp/nvim
+RUN bash -c "LV_BRANCH='release-1.3/neovim-0.9' bash <(curl -s https://raw.githubusercontent.com/LunarVim/LunarVim/release-1.3/neovim-0.9/utils/installer/install.sh)"
 
-
+ENV PATH=/root/.local/bin:$PATH
