@@ -9,6 +9,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
   build-essential \
   cmake \
   xclip \
+  unzip \
   python3-pip \
  && rm -rf /var/lib/apt/lists/*
 
@@ -30,3 +31,11 @@ ENV PATH=/opt/node/bin:$PATH
 RUN bash -c "LV_BRANCH='release-1.3/neovim-0.9' bash <(curl -s https://raw.githubusercontent.com/LunarVim/LunarVim/release-1.3/neovim-0.9/utils/installer/install.sh)"
 
 ENV PATH=/root/.local/bin:$PATH
+
+RUN curl -Lo lazygit.tar.gz "https://github.com/jesseduffield/lazygit/releases/download/v0.40.2/lazygit_0.40.2_Linux_x86_64.tar.gz" && \
+  tar xf lazygit.tar.gz lazygit && \
+  mv lazygit /usr/local/bin/
+
+RUN curl -fsSL https://deno.land/x/install/install.sh | sh
+ENV DENO_INSTALL="/root/.deno"
+ENV PATH="$PATH:$DENO_INSTALL/bin"
