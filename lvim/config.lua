@@ -34,7 +34,7 @@ table.insert(lvim.plugins, {
         desc = "Peek (Markdown Preview)",
       },
     },
-    opts = { theme = "light" },
+    opts = { theme = "dark" },
   })
 
 vim.opt.timeoutlen = 1
@@ -44,8 +44,10 @@ vim.api.nvim_create_user_command('PeekClose', require('peek').close, {})
 
 -- Enable DAP
 local dap = require('dap')
--- dap.defaults.fallback.force_external_terminal = true
 require('dap').defaults.fallback.exception_breakpoints = ({'raised', 'uncaught'})
+
+-- Enable LSP
+-- local lspconfig = require('lspconfig')
 
 -- Python DAP configuration
 dap.adapters.python = {
