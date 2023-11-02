@@ -39,15 +39,15 @@ table.insert(lvim.plugins, {
 
 vim.opt.timeoutlen = 1
 vim.opt.clipboard = "unnamedplus"
+vim.opt.relativenumber = true
+vim.opt.wrap = true
+
 vim.api.nvim_create_user_command('PeekOpen', require('peek').open, {})
 vim.api.nvim_create_user_command('PeekClose', require('peek').close, {})
 
 -- Enable DAP
 local dap = require('dap')
 require('dap').defaults.fallback.exception_breakpoints = ({'raised', 'uncaught'})
-
--- Enable LSP
--- local lspconfig = require('lspconfig')
 
 -- Python DAP configuration
 dap.adapters.python = {
