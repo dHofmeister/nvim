@@ -4,16 +4,6 @@ ARG DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
   sudo \
-  git \
-  curl \
-  wget \
-  xz-utils \
-  ca-certificates \
-  build-essential \
-  cmake \
-  xclip \
-  unzip \
-  python3-pip \
  && rm -rf /var/lib/apt/lists/*
 
 RUN useradd -m dev
@@ -24,6 +14,20 @@ RUN echo 'dev ALL=(ALL) NOPASSWD: ALL' > /etc/sudoers.d/dev
 
 USER dev
 WORKDIR /home/dev
+
+RUN sudo apt-get update && sudo apt-get install -y --no-install-recommends \
+  git \
+  curl \
+  wget \
+  xz-utils \
+  ca-certificates \
+  build-essential \
+  cmake \
+  xclip \
+  unzip \
+  fontconfig \
+  python3-pip \
+ && sudo rm -rf /var/lib/apt/lists/*
 
 RUN python3 -m pip install --upgrade pip && python3 -m pip install --no-cache-dir neovim pynvim debugpy pyright pyls
 
@@ -54,3 +58,5 @@ ENV DENO_INSTALL="/home/dev/.deno"
 ENV PATH="$PATH:$DENO_INSTALL/bin"
 
 RUN mkdir -p ~/.local/share/fonts && cd ~/.local/share/fonts && curl -fLO https://github.com/ryanoasis/nerd-fonts/raw/HEAD/patched-fonts/DroidSansMono/DroidSansMNerdFont-Regular.otf && fc-cache -fv
+
+USER root
