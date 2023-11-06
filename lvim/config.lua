@@ -2,6 +2,24 @@
 -- Video Tutorials: https://www.youtube.com/watch?v=sFA9kX-Ud_c&list=PLhoH5vyxr6QqGu0i7tt_XoVK9v-KvZ3m6
 -- Forum: https://www.reddit.com/r/lunarvim/
 -- Discord: https://discord.com/invite/Xb9B4Ny
+local which_key = require("which-key")
+
+local opts = {
+    mode = "n", -- NORMAL mode
+    prefix = "<leader>",
+    buffer = nil, -- Global mappings. Specify a buffer number for buffer local mappings
+    silent = true, -- use `silent` when creating keymaps
+    noremap = true, -- use `noremap` when creating keymaps
+    nowait = true, -- use `nowait` when creating keymaps
+}
+
+local mappings = {
+  d = {
+    T = {"<cmd>lua require('neotest').run.run({strategy = 'dap'})<CR>", "Run test"},
+  }
+}
+
+which_key.register(mappings, opts)
 
 table.insert(lvim.plugins, {
   "zbirenbaum/copilot-cmp",
@@ -36,6 +54,15 @@ table.insert(lvim.plugins, {
     },
     opts = { theme = "dark" },
   })
+
+table.insert(lvim.plugins, { 
+  "nvim-neotest/neotest",
+  dependencies = {
+    "nvim-lua/plenary.nvim",
+    "antoinemadec/FixCursorHold.nvim",
+    "rouge8/neotest-rust"
+  }
+})
 
 vim.opt.timeoutlen = 1
 vim.opt.clipboard = "unnamedplus"
@@ -112,9 +139,6 @@ dap.configurations.rust = {
     type = 'rust';
     request = 'launch';
     name = "Launch file";
---    program = function()
---      return vim.fn.input('Path to executable: ', vim.fn.getcwd() .. '/', 'file')
---    end;
 
     program = function()
       local build_output = vim.fn.system('cargo build')
@@ -139,10 +163,8 @@ dap.configurations.rust = {
         return nil
       end
 
-      -- Assuming the executable is in the target/debug directory
       local path_to_executable = vim.fn.getcwd() .. '/target/debug/' .. project_name
 
-      -- Check if the executable exists
       if vim.fn.filereadable(path_to_executable) == 1 then
         return path_to_executable
       else
@@ -151,43 +173,16 @@ dap.configurations.rust = {
       end
     end;
 
---    program = function()
---      -- Find the Cargo.toml file in subdirectories
---      local handle = io.popen("find . -type f -name 'Cargo.toml'")
---      local result = handle:read("*a")
---      handle:close()
---      -- Get the directory of the Cargo.toml file
---      local cargo_toml_dir = result:match("(.-)Cargo.toml")
---      if not cargo_toml_dir then
---        print('Cargo.toml not found')
---        return nil
---      end
---      -- Read the Cargo.toml file to get the project name
---      local cargo_toml = vim.fn.readfile(cargo_toml_dir .. 'Cargo.toml')
---      local project_name
---      for _, line in ipairs(cargo_toml) do
---        project_name = string.match(line, '^name%s*=%s*"(%g-)"')
---        if project_name then
---          break
---        end
---      end
---      if not project_name then
---        print('Could not find the project name in Cargo.toml')
---        return nil
---      end
---      -- Construct the path to the executable
---      local path_to_executable = cargo_toml_dir .. 'target/debug/' .. project_name
---      -- Check if the executable exists
---      if vim.fn.filereadable(path_to_executable) == 1 then
---        return path_to_executable
---      else
---        print('Executable not found: ' .. path_to_executable)
---        return nil
---      end
---    end;
-
     cwd = '${workspaceFolder}';
     stopOnEntry = false;
   },
 }
 
+require("neotest").setup({
+  adapters = {
+    require("neotest-rust"){
+        args = { "--no-capture" },
+        dap_adapter = "rust",
+    }
+  }
+})
