@@ -13,3 +13,9 @@ dap.listeners.before.event_exited["dapui_config"] = function()
 end
 
 dap.defaults.fallback.exception_breakpoints = ({ "raised", "uncaught" })
+
+require("neotest").setup({
+  adapters = {
+    require("neotest-rust")
+  }
+})

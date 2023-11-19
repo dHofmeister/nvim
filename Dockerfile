@@ -3,6 +3,7 @@ FROM ubuntu:22.04
 ARG DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
+  gnupg \
   sudo \
   wget \
   ca-certificates \
@@ -12,6 +13,33 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
   xclip \
   xsel \
   && rm -rf /var/lib/apt/lists/*
+
+RUN wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | apt-key add -
+RUN echo "deb http://apt.llvm.org/jammy/ llvm-toolchain-jammy-17 main" >> /etc/apt/sources.list && \
+  echo "deb-src http://apt.llvm.org/jammy/ llvm-toolchain-jammy-17 main" >> /etc/apt/sources.list
+
+RUN apt-get update && \
+  apt-get install -y --no-install-recommends \
+  llvm-17 \
+  lldb-17 \
+  && apt-get autoremove -y \
+  && apt-get clean \
+  && rm -rf /var/lib/apt/lists/*
+
+RUN \
+    cd /usr/bin && \
+    for tool in llvm-*17; do \
+        # Strip the -17 suffix to create the new name \
+        new_name=$(echo "$tool" | sed 's/-17$//'); \
+        # Create the symlink \
+        ln -s "$tool" "$new_name"; \
+    done && \
+    for tool in lldb-*17; do \
+        # Strip the -17 suffix to create the new name \
+        new_name=$(echo "$tool" | sed 's/-17$//'); \
+        # Create the symlink \
+        ln -s "$tool" "$new_name"; \
+    done
 
 RUN useradd -m dev
 
