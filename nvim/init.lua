@@ -12,10 +12,19 @@ dap.listeners.before.event_exited["dapui_config"] = function()
   dapui.open()
 end
 
-dap.defaults.fallback.exception_breakpoints = ({ "raised", "uncaught" })
+dap.defaults.fallback.exception_breakpoints = { "raised", "uncaught" }
+
+dap.adapters.lldb = {
+  type = "executable",
+  command = "/usr/bin/lldb-vscode",
+  name = "lldb",
+}
 
 require("neotest").setup({
   adapters = {
-    require("neotest-rust")
-  }
+    require("neotest-rust")({
+      args = { "--no-capture" },
+      dap_adapter = "lldb",
+    }),
+  },
 })
