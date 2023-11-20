@@ -28,3 +28,5 @@ require("neotest").setup({
     }),
   },
 })
+
+vim.fn.sign_define("DapBreakpoint", { text = " ", texthl = "DapBreakpoint" })
