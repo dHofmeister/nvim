@@ -1,4 +1,5 @@
-FROM ubuntu:22.04
+ARG PACKAGE
+FROM ${PACKAGE}
 
 ARG DEBIAN_FRONTEND=noninteractive
 
@@ -27,19 +28,19 @@ RUN apt-get update && \
   && rm -rf /var/lib/apt/lists/*
 
 RUN \
-    cd /usr/bin && \
-    for tool in llvm-*17; do \
-        # Strip the -17 suffix to create the new name \
-        new_name=$(echo "$tool" | sed 's/-17$//'); \
-        # Create the symlink \
-        ln -s "$tool" "$new_name"; \
-    done && \
-    for tool in lldb-*17; do \
-        # Strip the -17 suffix to create the new name \
-        new_name=$(echo "$tool" | sed 's/-17$//'); \
-        # Create the symlink \
-        ln -s "$tool" "$new_name"; \
-    done
+  cd /usr/bin && \
+  for tool in llvm-*17; do \
+  # Strip the -17 suffix to create the new name \
+  new_name=$(echo "$tool" | sed 's/-17$//'); \
+  # Create the symlink \
+  ln -s "$tool" "$new_name"; \
+  done && \
+  for tool in lldb-*17; do \
+  # Strip the -17 suffix to create the new name \
+  new_name=$(echo "$tool" | sed 's/-17$//'); \
+  # Create the symlink \
+  ln -s "$tool" "$new_name"; \
+  done
 
 RUN useradd -m dev
 
@@ -68,4 +69,3 @@ RUN wget -O lazygit.tar.gz "https://github.com/jesseduffield/lazygit/releases/do
 ENV PATH=/opt/nvim/bin:$PATH
 ENV PATH=/opt/node/bin:$PATH
 
-USER root

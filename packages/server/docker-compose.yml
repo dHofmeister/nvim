@@ -1,0 +1,23 @@
+services:
+  rdserver:
+    image: robotics-deployment:server-dev
+    privileged: true
+    container_name: rdserver 
+    network_mode: host
+    environment:
+      - DISPLAY=${DISPLAY}
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+    working_dir: /opt/rdserver
+    volumes:
+      - ~/repos/main/server:/opt/rdserver
+      - ~/.gitconfig:/home/dev/.gitconfig
+      - ~/.config/gcloud:/home/dev/.config/gcloud
+      - ~/.config/lazygit:/home/dev/.config/lazygit
+      - ~/.config/nvim:/home/dev/.config/nvim
+      - ~/.config/github-copilot:/home/dev/.config/github-copilot
+      - ~/.local/state/nvim:/home/dev/.local/state/nvim
+      - ~/.local/share/nvim:/home/dev/.local/share/nvim
+      - ~/.cache/nvim:/home/dev/.cache/nvim
+      - /tmp/.X11-unix:/tmp/.X11-unix
+    command: ["sleep", "infinity"]
+

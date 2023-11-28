@@ -1,12 +1,11 @@
 version: "3.7"
 
 services:
-  nvim:
+  dev:
     build:
-      dockerfile: "Dockerfile"
+      dockerfile: Dockerfile
       context: .
     image: robotics-deployment:dev
-    user: 1000:1000
     volumes:
       - ~/.gitconfig:/home/dev/.gitconfig
       - ~/.config/nvim:/home/dev/.config/nvim
