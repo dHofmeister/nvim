@@ -1,15 +1,15 @@
 services:
-  rdserver:
-    image: robotics-deployment:server-dev
+  rdembedded:
+    image: robotics-deployment:embedded-dev
     privileged: true
-    container_name: rdserver 
+    container_name: rdembedded 
     network_mode: host
     environment:
       - DISPLAY=${DISPLAY}
       - OPENAI_API_KEY=${OPENAI_API_KEY}
-    working_dir: /opt/rdserver
+    working_dir: /opt/rdembedded
     volumes:
-      - ~/repos/main/server:/opt/rdserver
+      - ~/repos/main/embedded:/opt/rdembedded
       - ~/.gitconfig:/home/dev/.gitconfig
       - ~/.config/gcloud:/home/dev/.config/gcloud
       - ~/.config/lazygit:/home/dev/.config/lazygit
