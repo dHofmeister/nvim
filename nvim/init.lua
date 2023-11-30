@@ -29,7 +29,7 @@ require("neotest").setup({
   },
 })
 
-vim.fn.sign_define("DapBreakpoint", { text = " ", texthl = "DapBreakpoint" })
+vim.fn.sign_define("DapBreakpoint", { text = "", texthl = "DapBreakpoint" })
 
 local wk = require("which-key")
 wk.register({
@@ -67,4 +67,8 @@ require("chatgpt").setup({
     top_p = 1,
     n = 1,
   },
+})
+
+require("notify").setup({
+  background_colour = "#1e2030",
 })

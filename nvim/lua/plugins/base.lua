@@ -5,7 +5,10 @@ if true then
       lazy = false,
       name = "catppuccin",
       config = function()
-        require("catppuccin").setup({ flavour = "macchiato" })
+        require("catppuccin").setup({
+          flavour = "macchiato",
+          transparent_background = true,
+        })
       end,
     },
     {
