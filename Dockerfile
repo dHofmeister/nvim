@@ -13,6 +13,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
   git \
   xclip \
   xsel \
+  cmake \
+  unzip \
+  python3-venv \
   && rm -rf /var/lib/apt/lists/*
 
 RUN wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | apt-key add -
