@@ -1,0 +1,23 @@
+version: "2.4"
+
+services:
+  display:
+    build:
+      context: .
+    image: 192.168.50.250:5000/shark-develop:display-amd64-dev
+    restart: always
+    privileged: true
+    network_mode: host
+    ipc: host
+    pid: host
+    runtime: nvidia
+    working_dir: /opt/shark_display
+    volumes:
+      - ~/repos/shark_display:/opt/shark_display
+      - ~/.gitconfig:/home/dev/.gitconfig
+      - ~/.config/nvim:/home/dev/.config/nvim
+      - ~/.config/github-copilot:/home/dev/.config/github-copilot
+      - ~/.local/state/nvim:/home/dev/.local/state/nvim
+      - ~/.local/share/nvim:/home/dev/.local/share/nvim
+      - ~/.cache/nvim:/home/dev/.cache/nvim
+    command: ["sleep", "infinity"]

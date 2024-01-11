@@ -1,8 +1,7 @@
 ARG PACKAGE
-FROM ${PACKAGE}
 
+FROM ${PACKAGE}
 ARG DEBIAN_FRONTEND=noninteractive
-ARG DISTRO=focal
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
   gnupg \
@@ -14,8 +13,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
   git \
   xclip \
   xsel \
-  cmake \
-  unzip \
   python3-venv \
   && rm -rf /var/lib/apt/lists/*
 
@@ -55,7 +52,7 @@ RUN echo 'dev ALL=(ALL) NOPASSWD: ALL' > /etc/sudoers.d/dev
 USER dev
 WORKDIR /home/dev
 
-RUN wget https://github.com/neovim/neovim/releases/download/v0.9.5/nvim-linux64.tar.gz && \
+RUN wget https://github.com/neovim/neovim/releases/download/v0.9.4/nvim-linux64.tar.gz && \
   tar -xzf nvim-linux64.tar.gz && \
   sudo mv nvim-linux64 /opt/nvim && \
   rm nvim-linux64.tar.gz
@@ -73,7 +70,6 @@ RUN wget -O lazygit.tar.gz "https://github.com/jesseduffield/lazygit/releases/do
 ENV PATH=/opt/nvim/bin:$PATH
 ENV PATH=/opt/node/bin:$PATH
 
-RUN sudo chown -R dev:dev /opt/cargo && sudo chown -R dev:dev /opt/nvim && sudo chown -R dev:dev /opt/node
-
-RUN echo "source /ran/install/setup.bash" >> ~/.bashrc
-
+COPY package_entrypoint.sh /ran/entrypoint.sh
+ENTRYPOINT ["/ran/entrypoint.sh"]
+RUN echo "source /ran/entrypoint.sh" >> /home/dev/.bashrc

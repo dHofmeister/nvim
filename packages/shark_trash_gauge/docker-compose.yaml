@@ -1,0 +1,31 @@
+version: "2.4"
+
+services:
+  gauge:
+    build:
+      context: .
+    image: shark-develop:dev-amd64
+    restart: always
+    privileged: true
+    network_mode: host
+    ipc: host
+    pid: host
+    user: 0:0
+    runtime: nvidia
+    environment:
+      - ROS_DISCOVERY_SERVER=127.0.0.1:11811
+      - TOPIC_IN_CAMERA=sys/camera/trash_gauge
+      - TOPIC_OUT_FULLNESS=sys/trash_gauge
+      - TOPIC_OUT_MASKS=dbg/trash_gauge/masks
+      - CONFIDENCE_THRESHOLD=0.5
+      - IOU_THRESHOLD=0.7
+      - SHARK_ID=S00
+    volumes:
+      - ~/.gitconfig:/root/.gitconfig
+      - ~/.config/nvim:/root/.config/nvim
+      - ~/.config/github-copilot:/root/.config/github-copilot
+      - ~/.local/state/nvim:/root/.local/state/nvim
+      - ~/.local/share/nvim:/root/.local/share/nvim
+      - ~/.cache/nvim:/root/.cache/nvim
+    entrypoint: ["/entrypoint.sh"]
+    command: ["sleep", "infinity"]
