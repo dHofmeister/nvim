@@ -13,6 +13,7 @@ services:
     runtime: nvidia
     working_dir: /opt/shark_display
     volumes:
+      - /tmp/.X11-unix:/tmp/.X11-unix
       - ~/repos/shark_display:/opt/shark_display
       - ~/.gitconfig:/home/dev/.gitconfig
       - ~/.config/nvim:/home/dev/.config/nvim
@@ -20,4 +21,16 @@ services:
       - ~/.local/state/nvim:/home/dev/.local/state/nvim
       - ~/.local/share/nvim:/home/dev/.local/share/nvim
       - ~/.cache/nvim:/home/dev/.cache/nvim
+    environment:
+      - NVIDIA_VISIBLE_DEVICES=all
+      - NVIDIA_DRIVER_CAPABILITIES=all
+      - "DISPLAY=$DISPLAY"
+      - ROS_DISCOVERY_SERVER=0.0.0.0:11811
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [ gpu ]
     command: ["sleep", "infinity"]
